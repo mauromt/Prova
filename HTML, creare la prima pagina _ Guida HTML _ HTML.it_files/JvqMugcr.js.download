@@ -1,0 +1,81 @@
+
+
+
+
+/* ControlTag Loader for Leonardo ADV c811671c-1057-4f07-9ad3-f7480613a562 */
+(function(w, cs) {
+  
+  if (/Twitter for iPhone/.test(w.navigator.userAgent || '')) {
+    return;
+  }
+
+  var debugging = /kxdebug/.test(w.location);
+  var log = function() {
+    
+    debugging && w.console && w.console.log([].slice.call(arguments).join(' '));
+  };
+
+  var load = function(url, callback) {
+    log('Loading script from:', url);
+    var node = w.document.createElement('script');
+    node.async = true;  
+    node.src = url;
+
+    
+    node.onload = node.onreadystatechange = function () {
+      var state = node.readyState;
+      if (!callback.done && (!state || /loaded|complete/.test(state))) {
+        log('Script loaded from:', url);
+        callback.done = true;  
+        callback();
+      }
+    };
+
+    
+    var sibling = w.document.getElementsByTagName('script')[0];
+    sibling.parentNode.insertBefore(node, sibling);
+  };
+
+  var config = {"app":{"name":"krux-scala-config-webservice","version":"3.17.2","schema_version":3},"confid":"JvqMugcr","context_terms":[{"id":"KajMKXrK","value":"te bianco"},{"id":"KdLH7WCO","value":"gravidanz"},{"id":"J7PZXZW7","value":"nespresso"},{"id":"KMVFZFcL","value":"corridor"},{"id":"KDrdfreX","value":"sveltesse"},{"id":"KDrdftR2","value":"activia"},{"id":"KajMKb6Z","value":"red tea"},{"id":"Kahz7qoi","value":"dieta"},{"id":"KLt2euTW","value":"micosi"},{"id":"KajMKWnH","value":"te verde"},{"id":"J7PZXbJ4","value":"illy"},{"id":"J4PO3x2q","value":"gatti"},{"id":"J7Pc922X","value":"vergnano"},{"id":"KajMKZdC","value":"the rosso"},{"id":"KdLH7XqN","value":"passeggino"},{"id":"KeMI9daO","value":"bio"},{"id":"KUhQ3DGZ","value":"antizecche"},{"id":"KovBlVje","value":"trading online"},{"id":"KGKW61mm","value":"zecche"},{"id":"KMVFZGVq","value":"running"},{"id":"KGKW6z1u","value":"cani"},{"id":"KajMKXUn","value":"te nero"},{"id":"KajMKW-C","value":"the verde"},{"id":"KeMI9eLh","value":"biodinamic"},{"id":"KajMKcRe","value":"white tea"},{"id":"KLt2evAi","value":"micotic"},{"id":"KeMI9dzI","value":"biologic"},{"id":"KDrdftkx","value":"danio"},{"id":"J7PZXZ0w","value":"lavazza"},{"id":"KdLH7Zn7","value":"maternita"},{"id":"KMVFZFvb","value":"maratona"},{"id":"KdLH7YU-","value":"seggiolone"},{"id":"J7PZXXcE","value":"caffe"},{"id":"KajMKahK","value":"the pressato"},{"id":"KdLH7Yp_","value":"pannolin"},{"id":"J4PO3xbs","value":"gatto"},{"id":"KTg4cCAf","value":"gluten free"},{"id":"KGKW61QA","value":"museruole"},{"id":"KajMKZG0","value":"the nero"},{"id":"Kahz7rlc","value":"fitness"},{"id":"KdLH7XVp","value":"tiralatte"},{"id":"KDrdfsYS","value":"vitasnella"},{"id":"J4PO35wJ","value":"catsitter"},{"id":"J7PZXdKq","value":"segafredo"},{"id":"KGKW6yIw","value":"cane"},{"id":"Kahz7rRF","value":"gonfiore di stomaco"},{"id":"KMVFZGCR","value":"runner"},{"id":"J7PZXcSc","value":"hug"},{"id":"Kahz7r5e","value":"dietetic"},{"id":"J7PZXc0g","value":"pellini"},{"id":"KDrdfsrs","value":"yomo"},{"id":"KdLH7XAx","value":"omogeneizzat"},{"id":"J7PZXaSq","value":"kimbo"},{"id":"KajMKZz2","value":"the bianco"},{"id":"KdLH7Wr9","value":"biberon"},{"id":"KTg4cBOf","value":"celiac"},{"id":"J7PZXX5G","value":"capsule"},{"id":"KTg4cAYt","value":"glutine"},{"id":"KdLH7Y-p","value":"latte materno"},{"id":"Kahz7q9M","value":"prova costume"},{"id":"KajMKYwa","value":"te rosso"},{"id":"KdLH7Z8w","value":"latte in polvere"},{"id":"KUhQ3DcI","value":"collarino"},{"id":"KajMKbNg","value":"green tea"},{"id":"KGKW606F","value":"guinzagli"},{"id":"KajMKa3R","value":"tea"},{"id":"KLt6ZS61","value":"Isis"},{"id":"KDrdfrKW","value":"danone"},{"id":"KdLH7Vr-","value":"neonat"},{"id":"KDrdfrx-","value":"granarolo"},{"id":"KdLH7WXJ","value":"allattamento"},{"id":"J4PO3yp8","value":"lettiera"},{"id":"KNnAHpaH","value":"Fineco"},{"id":"KajMKbkJ","value":"black tea"},{"id":"KajMKYZ0","value":"te pressato"},{"id":"KMVFZFIh","value":"corsa"},{"id":"KDrdfs-x","value":"fruttolo"},{"id":"KGKW60kU","value":"antipulci"},{"id":"J7PZXYk4","value":"cialde"},{"id":"KajMKaKn","value":"the aromatizzato"},{"id":"KajMKYCL","value":"te aromatizzato"},{"id":"J7PZXbs-","value":"nescafe"},{"id":"Kahz7sNs","value":"dimagr"},{"id":"KGKW62Qz","value":"dogsitter"},{"id":"KGKW616q","value":"pulci"},{"id":"KDrdfsFM","value":"muller"},{"id":"KGKW60Nu","value":"cuccia"},{"id":"Kvj7wWcw","value":"tennis"},{"id":"KdLH7X_S","value":"culla"},{"id":"KxyyGNTR","value":"auto aziendal"},{"id":"KdLH7aRS","value":"svezzamento"},{"id":"J4PO3yRo","value":"cibo per gatt"},{"id":"KUhQ3DRW","value":"collare"},{"id":"KA4UhjZh","value":"colesterolo"},{"id":"KdLH7ZTL","value":"parto"}],"publisher":{"id":2128,"name":"Leonardo ADV","uuid":"c811671c-1057-4f07-9ad3-f7480613a562","version_bucket":"stable","version_hash":"65cb90ab31cdb5cf32ec075000ceff37"},"params":{"link_header_bidder":false,"site_level_supertag_config":"site","recommend":false,"control_tag_pixel_throttle":100,"fingerprint":false,"user_data_timing":"load","store_realtime_segments":false,"tag_source":false,"link_hb_start_event":"ready","first_party_uid":false,"link_hb_timeout":2000,"link_hb_adserver_subordinate":true,"optimize_realtime_segments":false,"link_hb_adserver":"dfp","target_fingerprint":false,"context_terms":true,"dfp_premium":true},"prioritized_segments":[],"realtime_segments":[],"services":{"userdata":"//cdn.krxd.net/userdata/get","contentConnector":"//connector.krxd.net/content_connector","stats":"//apiservices.krxd.net/stats","optout":"//cdn.krxd.net/userdata/optout/status","event":"//beacon.krxd.net/event.gif","set_optout":"//apiservices.krxd.net/consumer/optout","data":"//beacon.krxd.net/data.gif","link_hb_stats":"//beacon.krxd.net/link_bidder_stats.gif","userData":"//cdn.krxd.net/userdata/get","link_hb_mas":"//link.krxd.net/hb","config":"//cdn.krxd.net/controltag/{{ confid }}.js","social":"//beacon.krxd.net/social.gif","addSegment":"//cdn.krxd.net/userdata/add","pixel":"//beacon.krxd.net/pixel.gif","um":"//apiservices.krxd.net/um","click":"//apiservices.krxd.net/click_tracker/track","stats_export":"//beacon.krxd.net/controltag_stats.gif","cookie":"//beacon.krxd.net/cookie2json","proxy":"//cdn.krxd.net/partnerjs/xdi","is_optout":"//beacon.krxd.net/optout_check","impression":"//beacon.krxd.net/ad_impression.gif","transaction":"//beacon.krxd.net/transaction.gif","log":"//jslog.krxd.net/jslog.gif","set_optin":"//apiservices.krxd.net/consumer/optin","usermatch":"//beacon.krxd.net/usermatch.gif"},"site":{"id":1570895,"name":"HTML.it"},"tags":[{"id":24834,"name":"Rubicon User Matching","content":"<script>\n(function(){\n  if (window.Krux) {\n    var kuid = window.Krux('get', 'user');\n    if (kuid && typeof kuid != 'undefined') {\n       var rubicon_url = '//tap.rubiconproject.com/oz/feeds/krux/tokens?afu=' + kuid;\n       var i = new Image();\n       i.src = rubicon_url;\n    }\n  }\n})();\n</script>","target":"","target_action":"append","timing":"onload","method":"document","internal":true,"template_replacement":true,"criteria":[]},{"id":24850,"name":"Rubicon Usermatch pixel","content":"<script>\n(function(){\n  if (window.Krux) {\n    var kuid = window.Krux('get', 'user');\n    if (kuid && typeof kuid != 'undefined') {\n       var rubicon_url = '//tap.rubiconproject.com/oz/feeds/krux/tokens?afu=' + kuid;\n       var i = new Image();\n       i.src = rubicon_url;\n    }\n  }\n})();\n</script>","target":"","target_action":"append","timing":"onload","method":"document","internal":true,"template_replacement":true,"criteria":[]},{"id":24851,"name":"Krux DTC - USER DATA","content":"<script>\r\n(function(){\r\n\r\n// USER MATCH\r\nif (typeof dmpUserId !== \"undefined\") {\r\n    Krux('set', 'user_attr_dmpUserId', dmpUserId);\r\n}\r\n\r\n// FIRST PARTY USER DATA\r\n/*\r\nExample of the js object to get user attributes from:\r\nvar dmpUD = {\"g\":\"m\",\"a\":\"31\",\"c\":\"Milano\"};\r\n*/\r\n\r\ntry{\r\n\tif ( \"g\" in dmpUD ){ // Gender\r\n\t\tKrux('set', 'user_attr_gender', dmpUD.g );\r\n\t}\r\n\tif ( \"a\" in dmpUD ){ // Age\r\n\t\tKrux('set', 'user_attr_age', dmpUD.a );\r\n\t}\r\n\tif ( \"c\" in dmpUD ){ // City\r\n\t\tKrux('set', 'user_attr_city', dmpUD.c );\r\n\t}\r\n}\r\ncatch(e){}\t\r\n})();\r\n</script>","target":"","target_action":"append","timing":"onload","method":"document","internal":true,"template_replacement":false,"criteria":[]},{"id":24852,"name":"Google Usermatch Pixel","content":"<script>\n(function() {\n  if (Krux('get', 'user') != null) {\n      new Image().src = 'https://usermatch.krxd.net/um/v2?partner=google';\n  }\n})();\n</script>","target":"","target_action":"append","timing":"onload","method":"document","internal":true,"template_replacement":true,"criteria":["and",["and",["and",["<=","$frequency",3]]]]},{"id":24853,"name":"Appnexus User Match","content":"<script>\n(function(){\n        var kuid = Krux('get', 'user');\n        if (kuid) {\n            var prefix = location.protocol == 'https:' ? \"https:\" : \"http:\";\n            var kurl = prefix + '//beacon.krxd.net/usermatch.gif?adnxs_uid=$UID';\n            var appnexus_url = '//ib.adnxs.com/getuid?' + kurl\n            var i = new Image();\n            i.src = appnexus_url;\n        }\n})();\n</script>","target":"","target_action":"append","timing":"onload","method":"document","internal":true,"template_replacement":true,"criteria":[]},{"id":24863,"name":"test","content":"<script></script>","target":"","target_action":"append","timing":"onload","method":"document","internal":false,"template_replacement":false,"criteria":[]},{"id":24818,"name":"Krux Track Social","content":"<script type=\"text/javascript\">Krux('social.init');</script>","target":null,"target_action":"append","timing":"onload","method":"document","internal":true,"template_replacement":true,"criteria":[]},{"id":24819,"name":"Technographic Data provider tag","content":"<script>\r\n// this tag is intentionally blank\r\n</script>","target":null,"target_action":"append","timing":"onload","method":"document","internal":true,"template_replacement":true,"criteria":["and",["and",["and",["<=","$frequency",3]]]]},{"id":24820,"name":"Krux Geographic Data provider tag","content":"None","target":null,"target_action":"append","timing":"onload","method":"document","internal":true,"template_replacement":true,"criteria":["and",["and",["and",["<=","$frequency",3]]]]},{"id":24829,"name":"Krux DTC - META TAGS","content":"<script>\r\n(function(){\r\nvar k_domain = \"\";\r\nvar k_subdomain = \"\";\r\nvar k_hostnameArray = window.location.hostname.split('.');\r\n\r\nk_domain = k_hostnameArray[k_hostnameArray.length-2];\r\nk_subdomain = (k_hostnameArray.length>2)?k_hostnameArray[k_hostnameArray.length-3]:\"\";\r\n\r\n// Per i sottositi di Leonardo (es. ludonet.leonardo.it) prendo come dominio quello di secondo livello\r\nif (k_domain==\"leonardo\" && k_subdomain!=\"www\" && k_subdomain!=\"\" )\r\n\tk_domain = \tk_subdomain;\r\n/*\r\nconsole.log(\"hostname: \"+k_hostnameArray+\" | domain: \"+k_domain + \" | subdomain: \"+k_subdomain);\r\n*/\r\n\r\n//list of meta names\r\nvar k_metaNames = [];\r\n//k_metaNames.push(\"description\");\r\nk_metaNames.push(\"keywords\");\r\n\r\n//list of meta properties\r\nvar k_metaProperties = [];\r\nk_metaProperties.push(\"article:tag\");\r\n//k_metaProperties.push(\"article:section\");\r\nk_metaProperties.push(\"og:title\");\r\n//k_metaProperties.push(\"og:description\");\r\n\r\nvar metas = document.getElementsByTagName('meta'); \r\nvar attributeName= \"\";\r\n\r\nfor (i=0; i<metas.length; i++) {\r\n    attributeName= \"\";\r\n    if ( k_metaNames.indexOf( metas[i].getAttribute(\"name\") ) > -1 ){\r\n        attributeName = 'meta-name_' + metas[i].getAttribute(\"name\");\r\n    }else if ( k_metaProperties.indexOf( metas[i].getAttribute(\"property\") ) > -1 ){\r\n        attributeName = 'meta-property_' + metas[i].getAttribute(\"property\");\r\n    }\r\n    if (attributeName != \"\") {\r\n        //console.log( '*' + attributeName + '= ' + metas[i].getAttribute(\"content\"));\r\n        Krux('set', 'page_attr_' + k_domain + '_' + attributeName, metas[i].getAttribute(\"content\"));\r\n        Krux('set', 'page_attr_' + 'global' + '_' + attributeName, metas[i].getAttribute(\"content\"));\r\n    }\r\n}\r\n})();\r\n</script>","target":"","target_action":"append","timing":"onload","method":"document","internal":true,"template_replacement":false,"criteria":[]},{"id":24831,"name":"Krux DTC - Html.it","content":"<script>\r\n(function(){\r\n\t/// DTC Html.it\r\n\tvar k_domain = \"\";\r\n\tvar k_subdomain = \"\";\r\n\tvar k_hostnameArray = window.location.hostname.split('.');\r\n\r\n\tk_domain = k_hostnameArray[k_hostnameArray.length-2];\r\n\tk_subdomain = (k_hostnameArray.length>2)?k_hostnameArray[k_hostnameArray.length-3]:\"\";\r\n\r\n\t// sezioni\r\n\tKrux('set', 'section', k_subdomain);\r\n})();\r\n</script>","target":"","target_action":"append","timing":"onload","method":"document","internal":true,"template_replacement":false,"criteria":[]}],"link":{"adslots":{},"bidders":{}}};
+  
+  for (var i = 0, tags = config.tags, len = tags.length, tag; (tag = tags[i]); ++i) {
+    if (String(tag.id) in cs) {
+      tag.content = cs[tag.id];
+    }
+  }
+
+  
+  var esiGeo = String(function(){/*
+   <esi:include src="/geoip_esi"/>
+   */}).replace(/^.*\/\*[^{]+|[^}]+\*\/.*$/g, '');
+
+  if (esiGeo) {
+    log('Got a request for:', esiGeo, 'adding geo to config.');
+    try {
+      config.geo = w.JSON.parse(esiGeo);
+    } catch (__) {
+      
+      log('Unable to parse geo from:', config.geo);
+      config.geo = {};
+    }
+  }
+
+
+
+  var proxy = (window.Krux && window.Krux.q && window.Krux.q[0] && window.Krux.q[0][0] === 'proxy');
+
+  if (!proxy || true) {
+    
+
+  load('//cdn.krxd.net/ctjs/controltag.js.65cb90ab31cdb5cf32ec075000ceff37', function() {
+    log('Loaded stable controltag resource');
+    Krux('config', config);
+  });
+
+  }
+
+})(window, (function() {
+  var obj = {};
+  
+  return obj;
+})());

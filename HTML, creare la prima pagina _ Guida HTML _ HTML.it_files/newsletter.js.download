@@ -1,0 +1,460 @@
+var dmpUD = {};
+
+function check_mail(address) {
+	if (window.RegExp) {
+		var notvalid = "(@.*@)|(\\.\\.)|(@\\.)|(\\.@)|(^\\.)";
+		var valid = "^.+\\@(\\[?)[a-zA-Z0-9\\-\\.]+\\.([a-zA-Z]{2,4}|[0-9]{1,3})(\\]?)$";
+		var regnv = new RegExp(notvalid);
+		var regv = new RegExp(valid);
+		if (!regnv.test(address) && regv.test(address))
+			return true;
+		return false;
+	} else {
+		if (address("@") >= 0)
+			return true;
+		return false;
+	}
+}
+
+function controllaEmail(mail_address) {
+	if (mail_address == "" || !check_mail(mail_address)) {
+		return false;
+	} else {
+		return true;
+	}
+}
+
+function getCheckedValue(radioObj) {
+	if (!radioObj)
+		return "";
+	var radioLength = radioObj.length;
+	if (radioLength == undefined)
+		if (radioObj.checked)
+			return radioObj.value;
+		else
+			return "";
+	for (var i = 0; i < radioLength; i++) {
+		if (radioObj[i].checked) {
+			return radioObj[i].value;
+		}
+	}
+	return "";
+}
+var from_popup=false;
+function try_register(e, second_step) {
+	e.preventDefault();
+	
+	if ('undefined' === typeof(second_step)){
+		second_step = false;
+	}
+	
+	if(second_step === false){
+		var privacy_ischecked = document.newsletterform.trattamento_privacy[0].checked;
+		var control = 0;
+	
+		if (!privacy_ischecked) {
+			alert('E\' obbligatorio acconsentire all\'informativa della privacy!');
+			control = 1;
+		}
+	
+		var mail_address = document.newsletterform.n_email.value;
+		if (!controllaEmail(mail_address) && control == 0) {
+			alert('Devi inserire una mail valida!');
+			control = 1;
+		}
+	
+		var inviadem = getCheckedValue(document.newsletterform.n_inviadem);
+		var inviadembool = 'false';
+		if (inviadem!=0) {
+			inviadembool = 'true';
+		}
+		//alert(control);
+		if (control == 0){
+			second_step_to_registration(mail_address,privacy_ischecked,inviadembool);
+		}
+	}
+	else {
+		control = 0;
+		var privacy_ischecked 	= document.newsletterform.trattamento_privacy.value;
+		var mail_address		= document.newsletterform.n_email.value;
+		var sesso				= document.newsletterform.drpSesso.options[document.newsletterform.drpSesso.selectedIndex].value;
+		var anno_di_nascita		= document.newsletterform.drpAnni.options[document.newsletterform.drpAnni.selectedIndex].value;
+		var provincia			= document.newsletterform.drpProvince.options[document.newsletterform.drpProvince.selectedIndex].value;
+		var professione			= document.newsletterform.drpProfessioni.options[document.newsletterform.drpProfessioni.selectedIndex].value;
+		var titolo_di_studio	= document.newsletterform.drpTitoli.options[document.newsletterform.drpTitoli.selectedIndex].value;
+		
+		var error_msg			= "E' obbligatorio selezionare i campi evidenziati in rosso!";	
+		if(sesso == '0'){
+			document.newsletterform.drpSesso.style.border = '1px solid red';
+			control = 1;
+		} else{
+			document.newsletterform.drpSesso.style.border = '';
+		}
+		if(anno_di_nascita == '0'){
+			document.newsletterform.drpAnni.style.border = '1px solid red';
+			control = 1;
+		} else{
+			document.newsletterform.drpAnni.style.border = '';
+		}
+		if(provincia == '0'){
+			document.newsletterform.drpProvince.style.border = '1px solid red';
+			control = 1;
+		} else{
+			document.newsletterform.drpProvince.style.border = '';
+		}
+		if(professione == '0'){
+			document.newsletterform.drpProfessioni.style.border = '1px solid red';
+			control = 1;
+		} else{
+			document.newsletterform.drpProfessioni.style.border = '';
+		}
+		if(titolo_di_studio == '0'){
+			document.newsletterform.drpTitoli.style.border = '1px solid red';
+			control = 1;
+		} else{
+			document.newsletterform.drpTitoli.style.border = '';
+		}
+		
+		if(undefined === document.newsletterform.n_inviadem.length){
+			//Input type = hidden || Consenso dato nel primo step
+			var inviadem 			= document.newsletterform.n_inviadem.value;
+		} else {
+			var inviademObj = getCheckedValue(document.newsletterform.n_inviadem);
+			var inviadem = 'false';
+			if (inviademObj != 0) {
+				inviadem = 'true';
+			}
+			else {
+				if(control == 1){
+					//ci sono già errori
+					error_msg = "E' obbligatorio selezionare i campi evidenziati in rosso e acconsentire al trattamento della privacy!";	
+				}
+				else {
+					control = 1;
+					error_msg = 'Devi acconsentire al trattamento della privacy per personalizzare la tua iscrizione!';
+				}
+			}
+			//Input type = radio || Consenso non dato nel primo step
+		}
+		
+		if(control == 1){
+			alert(error_msg);
+		}
+		
+		// n_sito: "download.html.it",
+        // n_lista1: "106",
+        // n_formato: "H",
+        // n_titolo: "1",
+	
+		if (control == 0 && second_step !== false) {
+			//document.getElementById('newsletter_box').style.cssText = '';
+			
+			
+			jQuery('#string-content').remove();
+			if(document.getElementById('div-loading')){
+				document.getElementById('div-loading').style.display = 'block';
+			}
+			data = {
+					action			: 'newsletter_subscribe',
+					eml 			: mail_address,
+					inviaDem		: inviadembool,
+					tags 			: _tag_,
+					n_sesso			: sesso,
+					n_anno			: anno_di_nascita,
+					n_provincia		: provincia,
+					n_professione	: professione,
+					n_titolo		: titolo_di_studio
+			};
+			register_mail(data);
+			
+			var g = sesso.toLowerCase(); 
+			
+			var today 	= new Date();
+			var a 		= today.getFullYear() - anno_di_nascita;
+			
+			var city	= document.newsletterform.drpProvince.options[document.newsletterform.drpProvince.selectedIndex].text;
+			
+			dmpUD = {"g":g,"a":a,"city":city};
+
+			Krux('page:load', function(err) {}, {pageView: false});
+		}
+	}
+	
+	
+	return false;
+}
+
+function register_mail(post_data){
+	window.onbeforeunload = null;
+	jQuery.ajax({
+				type : 'POST',
+				url : _ajaxurl_,
+				data : post_data,
+				dataType : "text",
+				success : function(res) {
+					risposta = "" + res;
+					check_res = true;
+					if (risposta.indexOf("NS:OK") != -1) {
+						RegisterOK();
+					} else if (risposta.indexOf("NS:PR") != -1) {
+						AlreadyRegister();
+					} else {
+						check_res = false;
+						GenericError(res);
+					}
+	
+					if (risposta.indexOf("TAG:OK") != -1) {
+						RegisterTagOK();
+					} else if (risposta.indexOf("TAG:ALR") != -1) {
+						AlreadyRegisterTag();
+					} else {
+						check_res = false;
+						GenericError(res);
+					}
+	
+					if (check_res) {
+						jQuery("#newsletter_box").html("<form><strong>Iscrizione effettuata</strong><br />Grazie per aver richiesto l'iscrizione alla nostra newsletter.</form>");
+					} else {
+						showMsgBox("<strong>Iscrizione non effettuata</strong><br />Grazie per aver richiesto l'iscrizione ma si &egrave; verificato un problema.");
+					}
+					if(null != document.getElementById('div-loading')){
+						document.getElementById('div-loading').style.display = 'none';
+					}
+				},
+				error : function(res) {
+					showMsgBox("<strong>Iscrizione non effettuata</strong><br />Grazie per aver richiesto l'iscrizione ma si &egrave; verificato un problema.");
+					GenericError(res);
+					
+					if(null != document.getElementById('div-loading')){
+						document.getElementById('div-loading').style.display = 'none';
+					}
+				}
+			});
+}
+
+function second_step_to_registration(mail_address, privacy, inviadem){
+	
+	var second_form = '<div class="pro-form"><form method="post" onsubmit="try_second_step(event);" name="newsletterform">';
+	
+	second_form += '<div class="pro-container">';
+	second_form += '<input type="hidden" value="'+mail_address+'" name="n_email">';
+	second_form += '<input type="hidden" value="'+privacy+'" name="trattamento_privacy">';
+	//INIZIO SESSO
+	second_form += '<div><span>Sesso:</span>';
+	second_form += '<select required id="drpSesso" name="drpSesso">';
+	second_form += '<option value="0">[seleziona]</option>';
+	second_form += '<option value="M">Maschile</option>';
+	second_form += '<option value="F">Femminile</option>';
+	second_form += '</select></div>';
+	//FINE SESSO
+	//INIZIO ANNO DI NASCITA
+	second_form += '<div><span>Anno:</span>';
+	second_form += '<select id="drpAnni" name="drpAnni">';
+	second_form += '<option value="0">[seleziona]</option>';
+		for (var i=1910; i < 2002; i++) {
+			second_form += '<option value="'+i+'">'+i+'</option>';
+		};
+	second_form += '</select></div>';
+	//FINE ANNO DI NASCITA
+	//INIZIO PROVINCIA
+	second_form += '<div><span>Provincia:</span>';
+	second_form += '<select id="drpProvince" name="drpProvince">';
+	second_form += '<option value="0">[seleziona]</option>';
+	var province = {"AG":"Agrigento","AL":"Alessandria","XX":"Altro (Estero)","AN":"Ancona","AO":"Aosta","AR":"Arezzo","AP":"Ascoli Piceno","AT":"Asti","AV":"Avellino","BA":"Bari","BT":"Barletta-Andria-Trani","BL":"Belluno","BN":"Benevento","BG":"Bergamo","BI":"Biella","BO":"Bologna","BZ":"Bolzano","BS":"Brescia","BR":"Brindisi","CA":"Cagliari","CL":"Caltanissetta","CB":"Campobasso","CI":"Carbonia-Iglesias","CE":"Caserta","CT":"Catania","CZ":"Catanzaro","CH":"Chieti","CO":"Como","CS":"Cosenza","CR":"Cremona","KR":"Crotone","CN":"Cuneo","EN":"Enna","FM":"Fermo","FE":"Ferrara","FI":"Firenze","FG":"Foggia","FC":"Forlì-Cesena","FR":"Frosinone","GE":"Genova","GO":"Gorizia","GR":"Grosseto","IM":"Imperia","IS":"Isernia","SP":"La Spezia","AQ":"L'Aquila","LT":"Latina","LE":"Lecce","LC":"Lecco","LI":"Livorno","LO":"Lodi","LU":"Lucca","MC":"Macerata","MN":"Mantova","MS":"Massa-Carrara","MT":"Matera","VS":"Medio Campidano","ME":"Messina","MI":"Milano","MO":"Modena","MB":"Monza e Brianza","NA":"Napoli","NO":"Novara","NU":"Nuoro","OG":"Ogliastra","OT":"Olbia-Tempio","OR":"Oristano","PD":"Padova","PA":"Palermo","PR":"Parma","PV":"Pavia","PG":"Perugia","PU":"Pesaro e Urbino","PE":"Pescara","PC":"Piacenza","PI":"Pisa","PT":"Pistoia","PN":"Pordenone","PZ":"Potenza","PO":"Prato","RG":"Ragusa","RA":"Ravenna","RC":"Reggio di Calabria","RE":"Reggio nell'Emilia","RI":"Rieti","RN":"Rimini","RM":"Roma","RO":"Rovigo","SA":"Salerno","SS":"Sassari","SV":"Savona","SI":"Siena","SR":"Siracusa","SO":"Sondrio","TA":"Taranto","TE":"Teramo","TR":"Terni","TO":"Torino","TP":"Trapani","TN":"Trento","TV":"Treviso","TS":"Trieste","UD":"Udine","VA":"Varese","VE":"Venezia","VB":"Verbania","VC":"Vercelli","VR":"Verona","VV":"Vibo Valentia","VI":"Vicenza","VT":"Viterbo"};
+	for (var k in province) {
+		second_form += '<option value="'+k+'">'+province[k]+'</option>';
+	}
+	second_form += '</select></div>';
+	//FINE PROVINCIA
+	//INIZIO PROFESSIONE
+	second_form += '<div><span>Professione:</span>';
+	second_form += '<select id="drpProfessioni" name="drpProfessioni">';
+	second_form += '<option value="0">[seleziona]</option>';
+	var professioni = {"14":"Altro","1":"Artigiano/commerciante","2":"Casalinga","3":"Coltivatore/allevatore","4":"Commesso","5":"Dirigente","13":"Disoccupato","6":"Funzionario","7":"Impiegato","8":"Imprenditore","9":"Operaio","10":"Pensionato","11":"Professionista","15":"Quadro","12":"Studente"};
+	for (var k in professioni) {
+		second_form += '<option value="'+k+'">'+professioni[k]+'</option>';
+	}
+	second_form += '</select></div>';
+	//FINE PROFESSIONE
+	//INIZIO TITOLO DI STUDIO
+	second_form += '<div><span>Titolo di studio:</span>';
+	second_form += '<select id="drpTitoli" name="drpTitoli">';
+	second_form += '<option value="0">[seleziona]</option>';
+	var titolo 	= {"5":"Diploma di laurea","4":"Diploma scuola media sup.","8":"Dottorato","6":"Laurea","2":"Licenza elementare","3":"Licenza media inferiore","1":"Nessuno","7":"Specializzazione"};
+	for (var k in titolo) {
+		second_form += '<option value="'+k+'">'+titolo[k]+'</option>';
+	}
+	second_form += '</select>';
+	
+	if(inviadem != 'false'){
+		second_form += '<input type="hidden" value="'+inviadem+'" name="n_inviadem">';
+	}
+	else {
+		second_form += '<div class="line-item">';
+		second_form += '<input type="radio" value="1" name="n_inviadem" id="radP2a">';
+        second_form += '<label class="radio-item">Sì</label>';
+        second_form += '<input type="radio" value="0" name="n_inviadem" id="radP2b">';
+        second_form += '<label class="radio-item">No</label>';
+		second_form += '<div class="lable-text">Acconsento al trattamento dei dati personali di cui al punto 3 dell\'<a target="_blank" href="http://www.gruppohtml.it/privacy.aspx">informativa sulla privacy</a></div>';
+        second_form += '</div>';
+	}
+	
+	
+	second_form += '</div></div>';
+	//FINE TITOLO DI STUDIO
+	second_form += '<input type="button" onclick="try_register(event, true)" id="newsletter_subscribe"></form></div>';
+
+	jQuery('#newsletter_box').html( second_form );
+	document.getElementById('newsletter_box').style.cssText = 'height: auto!important';
+	jQuery('#string-content').html('Grazie per esserti iscritto ai nostri servizi. Ora puoi personalizzare la tua iscrizione:');
+	window.onbeforeunload  = function(){
+		data = {
+					action			: 'newsletter_subscribe',
+					eml 			: mail_address,
+					inviaDem		: inviadem,
+					tags 			: _tag_
+			};
+		register_mail(data);
+	}
+	return false;
+}
+function try_register_social() {
+        from_popup=true;
+	var privacy_ischecked = document.newsletterform_social.trattamento_privacy[0].checked;
+	var control = 0;
+
+	if (!privacy_ischecked) {
+		alert('E\' obbligatorio acconsentire all\'informativa della privacy!');
+		control = 1;
+	}
+
+	var mail_address = document.newsletterform_social.n_email.value;
+	if (!controllaEmail(mail_address) && control == 0) {
+		alert('Devi inserire una mail valida!');
+		control = 1;
+	}
+
+        var dem_ischecked = (document.newsletterform_social.n_inviadem[0].checked || document.newsletterform_social.n_inviadem[1].checked);
+	if (!dem_ischecked && control == 0)
+	{
+		alert("Devi scegliere se acconsentire o no al trattamento dei dati personali di cui al punto 3 dell'informativa sulla privacy!");
+		//_gaq.push(['_trackEvent', 'newsletter', 'Errore: dem non scelta', _newslettertitle_, 0, true]);
+		control = 1;
+	}
+	var inviadem = getCheckedValue(document.newsletterform_social.n_inviadem);
+	//console.log(inviadem);
+	var inviadembool = 'false';
+	if (inviadem != 0) {
+		inviadembool = 'true';
+	}
+
+	//alert(control);
+	if (control == 0) {
+		jQuery.ajax({
+			type : 'POST',
+			url : _ajaxurl_,
+			data : {
+				action : 'newsletter_subscribe',
+				eml : mail_address,
+				inviaDem : inviadembool,
+				tags : _tag_
+			},
+			dataType : "text",
+			success : function(res) {
+                            if (typeof IS_CONCORSO=="undefined") IS_CONCORSO=0;
+                                if( jQuery('#social-survey_step2').is(':visible') || jQuery('#survey_module_popup').is(':visible') ) {
+                                    ispost = 0;
+                                } else {
+                                    ispost = 1;
+                                }
+				risposta = "" + res;
+                                
+				check_res = true;
+                                var dataLayer = dataLayer || [];
+				if (risposta.indexOf("NS:OK") != -1) {                                    
+					RegisterOK();
+				} else if (risposta.indexOf("NS:PR") != -1) {
+					AlreadyRegister();
+				} else {
+					check_res = false;
+					GenericError(res);
+				}
+
+				if (risposta.indexOf("TAG:OK") != -1) {
+					RegisterTagOK();
+				} else if (risposta.indexOf("TAG:ALR") != -1) {
+					AlreadyRegisterTag();
+				} else {
+					check_res = false;
+					GenericError(res);
+				}
+
+				if (check_res) {
+					                                    
+                                    if (ispost == 1) {
+                                        jQuery("#box-iscrizione-newsletter").html("<p class=\"success\"><strong>Iscrizione effettuata</strong><br />Grazie per aver richiesto l'iscrizione alla nostra newsletter.</p>");
+                                    } else if (ispost != 1){         
+                                            if ($.cookie('statusPopupSocial') == 'STEP1'){
+                                                $.cookie('statusPopupSocial', 'STEP2', { expires: 365, path: '/' });
+                                            }
+                                            $.cookie('showBanner_newsletter_step2', 'NO', { expires: 365, path: '/' });
+                                            $.cookie('showBanner_newsletter', 'NO', { expires: 365, path: '/' });
+                                            jQuery(".survey_newsletter").html("<div class=\"survey_title_success\">Grazie l'iscrizione Ã¨ confermata.</div><p class=\"survey_text_success\">Ti abbiamo mandato una email di conferma. Dal prossimo invio riceverai la newsletter di Html.it.</p>");
+     
+                                        }else{
+                                            jQuery("#box-iscrizione-newsletter").html("<p class=\"success\"><strong>Iscrizione effettuata</strong><br />Grazie per aver richiesto l'iscrizione alla nostra newsletter.</p>");
+                                        }
+				} else {
+					showMsgBox("<strong>Iscrizione non effettuata</strong><br />Grazie per aver richiesto l'iscrizione ma si &egrave; verificato un problema.");
+				}
+			},
+			error : function(res) {
+				showMsgBox("<strong>Iscrizione non effettuata</strong><br />Grazie per aver richiesto l'iscrizione ma si &egrave; verificato un problema.");
+				GenericError(res);
+			}
+		});
+	}
+
+	return false;
+}
+function RegisterOK() {
+        if (from_popup) {
+            cosa ="Popup";
+        }else{
+            cosa ="Articolo";
+        }
+	_gaq.push(['_trackEvent', 'Newsletter '+cosa, 'Ok', _newslettertitle_, 1, true]);
+}
+
+function AlreadyRegister() {
+        if (from_popup) {
+            cosa ="Popup";
+        }else{
+            cosa ="Articolo";
+        }
+	_gaq.push(['_trackEvent', 'Newsletter '+cosa, 'Errore: iscritto newsletter', _newslettertitle_, 0, true]);
+}
+
+function RegisterTagOK() {
+	if (_tag_ != "") _gaq.push(['_trackEvent', 'Alert: ' + _tag_, 'Ok', _newslettertitle_, 1, true]);
+}
+
+function AlreadyRegisterTag() {
+	if (_tag_ != "") _gaq.push(['_trackEvent', 'Alert: ' + _tag_, 'Errore: iscritto alert', _newslettertitle_, 0, true]);
+}
+
+function GenericError(res) {
+        if (from_popup) {
+            cosa ="Popup";
+        }else{
+            cosa ="Articolo";
+        }
+	_gaq.push(['_trackEvent', 'Newsletter '+cosa, 'Errore: ' + res, _newslettertitle_, 0, true]);
+}
+
+function showMsgBox( msg )
+{
+	jQuery('#errornewsletter').fadeIn('slow');
+	jQuery('#errornewsletter').html('<span class="error">' + msg + '</span>');
+	//window.setTimeout( hideMsgBox, 4000 );
+}

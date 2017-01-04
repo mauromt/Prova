@@ -1,0 +1,12 @@
+var nugg4Rubicon = new Image();nugg4Rubicon.src ='http://pixel.rubiconproject.com/tap.php?v=[145754|1||145756|0||145838|0||145840|1||145842|0||145844|0||145814|1||145816|0||145818|0||145820|0||145822|0||145824|0||145826|0||145828|0||145790|0||145792|0||145794|0||145796|0||145798|0||145800|1||145802|0]';var n_pbt = 'd1=1;d2=2;d3=3;d4=4';(function() {
+  window._adexc = window._adexc || [];
+     window.nugg_kv = window.nugg_kv || {};
+     window.nugg_kv.nuggsid=1950563236;
+     window.nugg_kv.nuggn=1473465466;
+    window._adexc.push(
+    ['_kv',window.nugg_kv]
+  );
+var axd = document.createElement('script'); axd.type = 'text/javascript'; axd.async = true;
+    axd.src = ('https:' === document.location.protocol ? 'https://' : 'http://') + 'dmp.theadex.com/d/332/923/s/adex.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(axd, s);
+})();
